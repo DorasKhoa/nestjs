@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { CentersService } from './centers.service';
-import { Roles } from 'src/decorator/customize';
-import { Role } from 'src/enums/role.enum';
+import { Roles } from 'src/common/decorator/customize';
+import { Role } from 'src/common/enums/role.enum';
 import { CreateCenterDto } from './dto/create-center.dto';
 import { UpdateCenterDto } from './dto/update-center.dto';
 

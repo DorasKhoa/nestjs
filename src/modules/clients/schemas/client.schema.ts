@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose';
 import {  Document, Types  } from 'mongoose'
 
 @Schema({timestamps: true})
-export class User extends Document{
+export class Client extends Document{
     
     @Prop({default: null})
     avatar: string;
@@ -26,23 +26,11 @@ export class User extends Document{
     @Prop({default: null})
     dob?: string;
 
-    @Prop({default: 0})
-    fees?: number;
-
-    @Prop({required: true, enum:['USER', 'ADMIN', 'DOCTOR', 'STAFF'], default: 'USER'})
+    @Prop({required: true, enum:['USER'], default: 'USER'})
     role: string;
-
-    @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Center', default: null})
-    center?: Types.ObjectId | null; 
-
-    @Prop({type: [{type: mongoose.Schema.Types.ObjectId}], ref: 'Schedule', default: []})
-    schedules: Types.ObjectId[]
 
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId}], ref: 'Order', default: []})
     orders: Types.ObjectId[]
-
-    @Prop({type: [{type: mongoose.Schema.Types.ObjectId}], ref: 'News', default: []})
-    news: Types.ObjectId[]
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const ClientSchema = SchemaFactory.createForClass(Client);

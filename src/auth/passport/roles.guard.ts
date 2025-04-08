@@ -1,7 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { ROLES_KEY } from 'src/decorator/customize';
-import { Role } from 'src/enums/role.enum';
+import { ROLES_KEY } from 'src/common/decorator/customize';
+import { Role } from 'src/common/enums/role.enum';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -20,7 +20,7 @@ export class RolesGuard implements CanActivate {
 
     // Lấy request và user từ context
     const request = context.switchToHttp().getRequest();
-    const user = request.user; // User này được lấy từ `JwtStrategy`
+    const user = request.user;
 
     if (!user) {
       throw new ForbiddenException('User not authenticated');

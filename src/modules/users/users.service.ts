@@ -4,25 +4,32 @@ import { User } from './schemas/user.schema';
 import mongoose, { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { hashedPasswordHelper } from 'src/helpers/util';
+import { hashedPasswordHelper } from 'src/common/helpers/util';
+import { CloudinaryService } from 'src/common/cloudinary/cloudinary.service';
 
 @Injectable()
 export class UsersService {
-    constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+    constructor(
+        @InjectModel(User.name) private userModel: Model<User>,
+        private readonly cloudinaryService: CloudinaryService
+    ) { }
 
     async findByEmail(email: string) {
         return await this.userModel.findOne({ email }).exec();
     }
 
+    //lam limited info tránh hacker lấy được thông tin
+
     async createUser(data: CreateUserDto) {
-        const existingEmail = await this.userModel.exists({email: data.email})
-        if(existingEmail) throw new BadRequestException('Email is already used!')
+        const existingEmail = await this.userModel.exists({ email: data.email })
+        if (existingEmail) throw new BadRequestException('Email is already used!')
         const hashedPassword = await hashedPasswordHelper(data.password);
         const newUser = new this.userModel({
             ...data,
             password: hashedPassword,
         });
-        return newUser.save()
+        newUser.save()
+        return {message: `${newUser.role} create successfully!`}
     }
 
     async findAllUsers() {
@@ -32,15 +39,20 @@ export class UsersService {
     }
 
     async findUserById(id: string) {
-        console.log(id);
         if (!mongoose.Types.ObjectId.isValid(id)) throw new NotFoundException('User not found!')
         const user = await this.userModel.findById(id).exec();
         if (!user) throw new NotFoundException('User not found!');
         return await this.userModel.findById(id);
     }
 
-    async updateUser(id: string, data: UpdateUserDto) {
-        if (!mongoose.Types.ObjectId.isValid(id)) throw new NotFoundException('User not found!')
+    async updateUser(id: string, data: UpdateUserDto, file?: Express.Multer.File) {
+        if (!mongoose.Types.ObjectId.isValid(id)) throw new NotFoundException('User not found!');
+
+        if (file) {
+            const uploadResult = await this.cloudinaryService.uploadImage(file, 'users');
+            data.avatar = uploadResult.secure_url; // gán url vào object update
+        }
+
         const updateUser = await this.userModel.findByIdAndUpdate(id, data, { new: true }).exec();
         if (!updateUser) throw new NotFoundException('User not found!');
         return { message: 'User updated successfully', updateUser }

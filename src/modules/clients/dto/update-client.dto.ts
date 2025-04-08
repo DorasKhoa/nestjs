@@ -1,7 +1,6 @@
-import { ArrayUnique, IsArray, IsMongoId, IsNumber, IsOptional, IsString } from "class-validator"
+import { IsNumber, IsOptional, IsString } from "class-validator";
 
-export class UpdateUserDto {
-
+export class UpdateClientDto {
     @IsOptional()
     @IsString()
     avatar?: string;
@@ -33,18 +32,4 @@ export class UpdateUserDto {
     @IsOptional()
     @IsString()
     dob?: string;
-
-    @IsOptional()
-    @IsNumber()
-    fees?: number;
-
-    @IsOptional()
-    @IsMongoId()
-    center?: string;
-
-    @IsOptional()
-    @IsArray()
-    @ArrayUnique()
-    @IsMongoId({ each: true })
-    schedules?: string[];
 }

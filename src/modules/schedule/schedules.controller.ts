@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { SchedulesService } from './schedules.service';
-import { Roles } from 'src/decorator/customize';
-import { Role } from 'src/enums/role.enum';
+import { Roles } from 'src/common/decorator/customize';
+import { Role } from 'src/common/enums/role.enum';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
 

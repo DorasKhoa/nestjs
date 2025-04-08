@@ -9,6 +9,8 @@ import { CentersModule } from './modules/centers/centers.module';
 import { SchedulesModule } from './modules/schedule/schedules.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { NewsModule } from './modules/news/news.module';
+import { CloudinaryModule } from './common/cloudinary/cloudinary.module';
+import { ClientsModule } from './modules/clients/clients.module';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { NewsModule } from './modules/news/news.module';
     SchedulesModule,
     OrdersModule,
     NewsModule,
+    CloudinaryModule,
+    ClientsModule,
   ],
   providers:[
     {

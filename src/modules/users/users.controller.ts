@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Request } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Roles } from 'src/decorator/customize';
-import { Role } from 'src/enums/role.enum';
+import { Roles } from 'src/common/decorator/customize';
+import { Role } from 'src/common/enums/role.enum';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('users')
 export class UsersController {
@@ -25,31 +26,37 @@ export class UsersController {
 
     @Patch('/update/:id')
     @Roles(Role.ADMIN)
-    updateUser(@Param('id') id: string, @Body() data: UpdateUserDto) {
-        return this.usersService.updateUser(id, data);
+    @UseInterceptors(FileInterceptor('avatar'))
+    updateUser(
+        @Param('id') id: string,
+        @Body() data: UpdateUserDto,
+        @UploadedFile() file?: Express.Multer.File
+    ) {
+        return this.usersService.updateUser(id, data, file);
     }
-
+    
     @Delete(':id')
     @Roles(Role.ADMIN)
     deleteUser(@Param('id') id: string) {
         return this.usersService.deleteUser(id);
     }
-
-    //========= ALL =========
-
-    @Get('profile')
-    getProfile(@Request() req) {
-        return this.usersService.findUserById(req.user._id)
-    }
-
-    @Patch('profile')
-    updateProfile(@Request() req, data: UpdateUserDto) {
-        return this.usersService.updateUser(req.user._id, data);
-    }
-
+    
     @Get('/find/:id')
+    @Roles(Role.ADMIN)
     findUserById(@Param('id') id: string) {
         return this.usersService.findUserById(id)
     }
 
+    //========= DOCTOR + ADMIN =========
+    @Patch('profile')
+    @Roles(Role.DOCTOR, Role.ADMIN)
+    updateProfile(@Request() req, data: UpdateUserDto) {
+        return this.usersService.updateUser(req.user._id, data);
+    }
+
+    //========= ALL =========
+    @Get('profile')
+    getProfile(@Request() req: any) {
+        return this.usersService.findUserById(req.user._id)
+    }
 }
