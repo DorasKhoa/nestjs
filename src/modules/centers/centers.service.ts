@@ -107,6 +107,7 @@ export class CentersService {
         return { message: 'Doctor assign successfully', updatedCenter }
     }
 
+    //thêm đk khi bác sĩ ở trong 1 phòng ban thì không cho phép họ bỏ bác sĩ khỏi center
     async removeDoctorFromCenter(centerId: string, doctorId: string) {
         if (!mongoose.Types.ObjectId.isValid(centerId)) throw new BadRequestException('Center not found!');
         if (!mongoose.Types.ObjectId.isValid(doctorId)) throw new BadRequestException('Doctor not found!');

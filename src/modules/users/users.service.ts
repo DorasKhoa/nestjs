@@ -19,7 +19,6 @@ export class UsersService {
     }
 
     //lam limited info tránh hacker lấy được thông tin
-
     async createUser(data: CreateUserDto) {
         const existingEmail = await this.userModel.exists({ email: data.email })
         if (existingEmail) throw new BadRequestException('Email is already used!')
@@ -58,7 +57,9 @@ export class UsersService {
         return { message: 'User updated successfully', updateUser }
     }
 
-    // logic: không thể xóa bác sĩ khi mà họ đã được gán vào lịch làm.
+    /* logic: không thể xóa bác sĩ khi mà họ đã được gán vào lịch làm.
+     logic: không thể xóa bác sĩ khi họ đang ở trong 1 phòng ban nào đó
+     xài this.department.find({doctor: id}) */
     async deleteUser(id: string) {
         if (!mongoose.Types.ObjectId.isValid(id)) throw new NotFoundException('User not found!')
         const user = await this.userModel.findById(id).exec();

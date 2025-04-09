@@ -44,12 +44,16 @@ export class RequirementsController {
     return this.requirementsService.getRequirementByCenter(id);
   }
 
+  //chỉnh sửa requirement
+  //truyền vào department id
   @Patch(':id')
   @Roles(Role.ADMIN)
   UpdateRequirement(@Param('id') id:string, @Body() data: UpdateRequirementDto) {
     return this.requirementsService.update(id, data);
   }
 
+  //xóa requirement
+  //truyền vào department id
   @Delete(':id')
   @Roles(Role.ADMIN)
   deleteRequirement(@Param('id') id:string) {
