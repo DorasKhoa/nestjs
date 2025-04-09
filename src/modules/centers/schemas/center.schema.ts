@@ -13,6 +13,12 @@ export class Center extends Document {
 
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}], default: []})
     doctors: Types.ObjectId[];
+
+    @Prop({type: [{type: mongoose.Schema.Types.ObjectId}], ref:'Requirement', default:[]})
+    requirements: Types.ObjectId[];
+
+    @Prop({type: [{type: mongoose.Schema.Types.ObjectId}],ref: 'Department', default:[]})
+    departments: Types.ObjectId[];
 }
 
 export const CenterSchema = SchemaFactory.createForClass(Center);

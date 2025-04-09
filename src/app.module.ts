@@ -11,6 +11,8 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { NewsModule } from './modules/news/news.module';
 import { CloudinaryModule } from './common/cloudinary/cloudinary.module';
 import { ClientsModule } from './modules/clients/clients.module';
+import { RequirementsModule } from './modules/requirements/requirements.module';
+import { DepartmentsModule } from './modules/departments/departments.module';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { ClientsModule } from './modules/clients/clients.module';
     NewsModule,
     CloudinaryModule,
     ClientsModule,
+    RequirementsModule,
+    DepartmentsModule,
   ],
   providers:[
     {
