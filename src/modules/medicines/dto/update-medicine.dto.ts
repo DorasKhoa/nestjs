@@ -16,4 +16,8 @@ export class UpdateMedicineDto {
     @IsOptional()
     @IsNumber()
     quantity?: number;
+
+    @IsOptional()
+    @IsNumber()
+    price?: number;
 }

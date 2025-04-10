@@ -31,6 +31,9 @@ export class Client extends Document{
 
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId}], ref: 'Order', default: []})
     orders: Types.ObjectId[]
+
+    @Prop({type: [{type: mongoose.Schema.Types.ObjectId}], ref: 'Cart'})
+    carts: Types.ObjectId[];
 }
 
 export const ClientSchema = SchemaFactory.createForClass(Client);

@@ -6,11 +6,13 @@ import { Client } from './schemas/client.schema';
 import mongoose, { Model } from 'mongoose';
 import { CloudinaryService } from 'src/common/cloudinary/cloudinary.service';
 import { hashedPasswordHelper } from 'src/common/helpers/util';
+import { Cart } from '../carts/schemas/cart.schema';
 
 @Injectable()
 export class ClientsService {
   constructor(
     @InjectModel(Client.name) private clientModel: Model<Client>,
+    @InjectModel(Cart.name) private cartModel: Model<Cart>,
     private readonly cloudinaryService: CloudinaryService
   ) { }
 
@@ -26,7 +28,8 @@ export class ClientsService {
       ...data,
       password: hashedPassword,
     });
-    return await newClient.save()
+    await newClient.save()
+    return {message: 'Client created successfully!'};
   }
 
   async findAll() {
@@ -53,10 +56,14 @@ export class ClientsService {
     return {message: 'Updated successfully!'};
   }
 
+
   async remove(id: string) {
     if(!mongoose.Types.ObjectId.isValid(id)) throw new NotFoundException('User not found!');
-    const client = await this.clientModel.findByIdAndDelete(id);
+    const client = await this.clientModel.findById(id);
     if(!client) throw new BadRequestException('User not found!'); 
-    return {message: 'Deleted successfully!'};
+    if(client.orders.length > 0) throw new BadRequestException('Client had order, failed to delete!');
+    if(client.carts.length > 0) throw new BadRequestException('Client had carts, failed to delete!');
+    await this.clientModel.deleteOne({_id: client._id});
+    return {message: 'Client deleted successfully!'};
   }
 }

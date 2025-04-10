@@ -33,9 +33,10 @@ export class MedicinesController {
   deleteMedicine(@Param('id') id: string) {
     return this.medicinesService.delete(id);
   }
-  //============== ALL ==============
+  //============== ADMIN + USER ==============
   //xem tất cả thuốc
   @Get()
+  @Roles(Role.ADMIN, Role.USER)
   getAllMedicine() {
     return this.medicinesService.getAll();
   }
@@ -43,6 +44,7 @@ export class MedicinesController {
   //xem thông tin của 1 loại thuốc nào đó
   //truyền medicine id vào param
   @Get(':id')
+  @Roles(Role.ADMIN, Role.USER)
   getMedById(@Param('id') id:string) {
     return this.medicinesService.getById(id);
   }

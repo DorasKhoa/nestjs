@@ -16,4 +16,8 @@ export class CreateMedicineDto {
     @IsOptional()
     @IsNumber()
     quantity?: number;
+
+    @IsOptional()
+    @IsNumber()
+    price?: number;
 }
