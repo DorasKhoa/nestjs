@@ -12,10 +12,8 @@ export class SchedulesService {
         @InjectModel(Schedule.name) private scheduleModel: Model<Schedule>,
         @InjectModel(User.name) private userModel: Model<User>,
     ) { }
-
+    //thêm logic tạo lịch giờ start < end
     async createSchedule(data: CreateScheduleDto) {
-        //thêm logic tạo lịch giờ start < end
-        //...
         const newSchedule = new this.scheduleModel(data)
         return await newSchedule.save();
     }

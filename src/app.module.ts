@@ -13,6 +13,8 @@ import { CloudinaryModule } from './common/cloudinary/cloudinary.module';
 import { ClientsModule } from './modules/clients/clients.module';
 import { RequirementsModule } from './modules/requirements/requirements.module';
 import { DepartmentsModule } from './modules/departments/departments.module';
+import { MedicinesModule } from './modules/medicines/medicines.module';
+import { CartsModule } from './modules/carts/carts.module';
 
 @Module({
   imports: [
@@ -34,6 +36,8 @@ import { DepartmentsModule } from './modules/departments/departments.module';
     ClientsModule,
     RequirementsModule,
     DepartmentsModule,
+    MedicinesModule,
+    CartsModule,
   ],
   providers:[
     {

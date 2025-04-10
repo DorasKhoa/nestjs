@@ -36,13 +36,16 @@ export class User extends Document{
     center?: Types.ObjectId | null; 
 
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId}], ref: 'Schedule', default: []})
-    schedules: Types.ObjectId[]
+    schedules: Types.ObjectId[];
 
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId}], ref: 'Order', default: []})
-    orders: Types.ObjectId[]
+    orders: Types.ObjectId[];
 
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId}], ref: 'News', default: []})
-    news: Types.ObjectId[]
+    news: Types.ObjectId[];
+
+    @Prop({type: [{type: mongoose.Schema.Types.ObjectId}], ref: 'Medicine', default: []})
+    medicines: Types.ObjectId[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
