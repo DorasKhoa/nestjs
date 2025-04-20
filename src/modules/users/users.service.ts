@@ -28,7 +28,7 @@ export class UsersService {
             password: hashedPassword,
         });
         newUser.save()
-        return {message: `${newUser.role} create successfully!`}
+        return { message: `${newUser.role} create successfully!` }
     }
 
     async findAllUsers() {
@@ -39,9 +39,11 @@ export class UsersService {
 
     async findUserById(id: string) {
         if (!mongoose.Types.ObjectId.isValid(id)) throw new NotFoundException('User not found!')
-        const user = await this.userModel.findById(id).exec();
+        const user = await this.userModel.findById(id)
+            .populate('center', 'local')
+            .populate('schedules')
         if (!user) throw new NotFoundException('User not found!');
-        return await this.userModel.findById(id);
+        return user;
     }
 
     async updateUser(id: string, data: UpdateUserDto, file?: Express.Multer.File) {
@@ -65,5 +67,11 @@ export class UsersService {
         const user = await this.userModel.findById(id).exec();
         if (!user) throw new NotFoundException('User not Found')
         return await this.userModel.findByIdAndDelete(id);
+    }
+
+    async getAllDoctor() {
+        const doctors = await this.userModel.find({ role: 'DOCTOR' }).select('avatar name fees category')
+        if (!doctors) throw new NotFoundException('User not found!');
+        return doctors;
     }
 }

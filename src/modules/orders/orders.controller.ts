@@ -28,6 +28,7 @@ export class OrdersController {
   }
 
   //========= USER & DOCTOR =========
+  //xem order của họ
   @Get('me')
   @Roles(Role.USER, Role.DOCTOR)
   findMyOrder(@Req() req: any) {

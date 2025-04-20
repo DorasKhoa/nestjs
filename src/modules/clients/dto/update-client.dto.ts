@@ -1,4 +1,5 @@
-import { IsNumber, IsOptional, IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { IsNumber, IsOptional, IsString, Matches, MinLength } from "class-validator";
 
 export class UpdateClientDto {
     @IsOptional()
@@ -15,6 +16,9 @@ export class UpdateClientDto {
 
     @IsOptional()
     @IsString()
+    @MinLength(6)
+    @Matches(/^(?=.*[0-9])(?=.*[\W_])/,
+        { message: 'Password must contain at least one number and one special character' })
     password?: string;
 
     @IsOptional()
@@ -26,6 +30,7 @@ export class UpdateClientDto {
     address?: string;
 
     @IsOptional()
+    @Type(() => Number)
     @IsNumber()
     phone?: number;
 

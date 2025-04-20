@@ -62,7 +62,11 @@ export class OrdersService {
 
   async findMyOrder(userId: string) {
     if (!mongoose.Types.ObjectId.isValid(userId)) throw new NotFoundException('User not found!');
-    const order = await this.orderModel.find({ user: userId });
+    const order = await this.orderModel.find({ user: userId })
+    .populate([
+      {path: 'schedule', select: 'start end date status'},
+      {path: 'doctor', select: 'avatar name'}
+    ]);
     if (!order) throw new BadRequestException('Order not found!');
     return order;
   }

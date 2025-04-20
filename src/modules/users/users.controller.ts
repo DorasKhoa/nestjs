@@ -40,12 +40,6 @@ export class UsersController {
     deleteUser(@Param('id') id: string) {
         return this.usersService.deleteUser(id);
     }
-    
-    @Get('/find/:id')
-    @Roles(Role.ADMIN)
-    findUserById(@Param('id') id: string) {
-        return this.usersService.findUserById(id)
-    }
 
     //========= DOCTOR + ADMIN =========
     @Patch('profile')
@@ -58,5 +52,15 @@ export class UsersController {
     @Get('profile')
     getProfile(@Request() req: any) {
         return this.usersService.findUserById(req.user._id)
+    }
+
+    @Get('alldoc')
+    getAllDoc() {
+        return this.usersService.getAllDoctor()
+    }
+
+    @Get('/find/:id')
+    findUserById(@Param('id') id: string) {
+        return this.usersService.findUserById(id)
     }
 }

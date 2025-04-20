@@ -15,6 +15,7 @@ import { RequirementsModule } from './modules/requirements/requirements.module';
 import { DepartmentsModule } from './modules/departments/departments.module';
 import { MedicinesModule } from './modules/medicines/medicines.module';
 import { CartsModule } from './modules/carts/carts.module';
+import { ChecksModule } from './modules/checks/checks.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { CartsModule } from './modules/carts/carts.module';
     DepartmentsModule,
     MedicinesModule,
     CartsModule,
+    ChecksModule,
   ],
   providers:[
     {

@@ -29,7 +29,7 @@ export class ClientsService {
       password: hashedPassword,
     });
     await newClient.save()
-    return {message: 'Client created successfully!'};
+    return { message: 'Client created successfully!' };
   }
 
   async findAll() {
@@ -37,33 +37,34 @@ export class ClientsService {
   }
 
   async findOne(id: string) {
-    if(!mongoose.Types.ObjectId.isValid(id)) throw new NotFoundException ('User not found!');
+    if (!mongoose.Types.ObjectId.isValid(id)) throw new NotFoundException('User not found!');
     const client = await this.clientModel.findById(id);
-    if(!client) throw new NotFoundException('User not found!');
+    if (!client) throw new NotFoundException('User not found!');
     return client;
   }
 
   async update(id: string, data: UpdateClientDto, role: string, file?: Express.Multer.File) {
-    if(!mongoose.Types.ObjectId.isValid(id)) throw new NotFoundException('User not found!');
+    if (!mongoose.Types.ObjectId.isValid(id)) throw new NotFoundException('User not found!');
     if (file) {
       const uploadResult = await this.cloudinaryService.uploadImage(file, 'clients');
       data.avatar = uploadResult.secure_url; // gán url vào object update
-  }
+    }
+    if(data.password) data.password = await hashedPasswordHelper(data.password);
     const client = await this.clientModel.findById(id);
-    if(!client) throw new NotFoundException('User not found!');
-    if(role !== 'ADMIN') delete data.role
+    if (!client) throw new NotFoundException('User not found!');
+    if (role !== 'ADMIN') delete data.role
     await this.clientModel.findByIdAndUpdate(client._id, data);
-    return {message: 'Updated successfully!'};
+    return { message: 'Updated successfully!' };
   }
 
 
   async remove(id: string) {
-    if(!mongoose.Types.ObjectId.isValid(id)) throw new NotFoundException('User not found!');
+    if (!mongoose.Types.ObjectId.isValid(id)) throw new NotFoundException('User not found!');
     const client = await this.clientModel.findById(id);
-    if(!client) throw new BadRequestException('User not found!'); 
-    if(client.orders.length > 0) throw new BadRequestException('Client had order, failed to delete!');
-    if(client.carts.length > 0) throw new BadRequestException('Client had carts, failed to delete!');
-    await this.clientModel.deleteOne({_id: client._id});
-    return {message: 'Client deleted successfully!'};
+    if (!client) throw new BadRequestException('User not found!');
+    if (client.orders.length > 0) throw new BadRequestException('Client had order, failed to delete!');
+    if (client.carts.length > 0) throw new BadRequestException('Client had carts, failed to delete!');
+    await this.clientModel.deleteOne({ _id: client._id });
+    return { message: 'Client deleted successfully!' };
   }
 }

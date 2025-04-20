@@ -6,6 +6,7 @@ import { Cart, CartSchema } from './schemas/cart.schema';
 import { User, UserSchema } from '../users/schemas/user.schema';
 import { Client, ClientSchema } from '../clients/schemas/client.schema';
 import { Medicine, MedicineSchema } from '../medicines/schemas/medicine.schema';
+import { Check, CheckSchema } from '../checks/schemas/check.schema';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { Medicine, MedicineSchema } from '../medicines/schemas/medicine.schema';
       {name: Cart.name, schema: CartSchema},
       {name: User.name, schema: UserSchema},
       {name: Client.name, schema: ClientSchema},
-      {name: Medicine.name, schema: MedicineSchema}
+      {name: Medicine.name, schema: MedicineSchema},
+      {name: Check.name, schema: CheckSchema}
     ]),
   ],
   controllers: [CartsController],
