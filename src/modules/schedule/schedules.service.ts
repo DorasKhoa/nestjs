@@ -15,11 +15,14 @@ export class SchedulesService {
     //thêm logic tạo lịch giờ start < end
     async createSchedule(data: CreateScheduleDto) {
         const newSchedule = new this.scheduleModel(data)
-        return await newSchedule.save();
+        await newSchedule.save();
+        return {message: 'Schedule created sucessfully!'};
     }
 
     async findAllSchedule() {
-        return await this.scheduleModel.find();
+        return await this.scheduleModel.find()
+        .populate('doctor', 'name')
+        .populate('user', 'name email')
     }
 
     async findScheduleById(id: string) {
@@ -38,8 +41,10 @@ export class SchedulesService {
 
     async deleteSchedule(id: string) {
         if (!mongoose.Types.ObjectId.isValid(id)) throw new NotFoundException('Schedule not found!');
-        const deleteSchedule = await this.scheduleModel.findByIdAndDelete(id);
-        if (!deleteSchedule) throw new NotFoundException('Schedule not found!');
+        const schedule = await this.scheduleModel.findById(id);
+        if(!schedule) throw new NotFoundException('Schedule not found!');
+        if(schedule.user) throw new BadRequestException('This Schedule had user')
+        if(schedule.doctor) throw new BadRequestException('This Schedule had doctor');
         return { message: 'Schedule deleted successfully!' };
     }
 

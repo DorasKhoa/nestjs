@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateMedicineDto {
@@ -14,10 +15,12 @@ export class CreateMedicineDto {
     ingredient: string;
 
     @IsOptional()
+    @Type(()=> Number)
     @IsNumber()
     quantity?: number;
 
     @IsOptional()
+    @Type(()=> Number)
     @IsNumber()
     price?: number;
 }

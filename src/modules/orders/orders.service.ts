@@ -65,10 +65,21 @@ export class OrdersService {
     const order = await this.orderModel.find({ user: userId })
     .populate([
       {path: 'schedule', select: 'start end date status'},
-      {path: 'doctor', select: 'avatar name'}
+      {path: 'doctor', select: 'avatar name'},
     ]);
     if (!order) throw new BadRequestException('Order not found!');
     return order;
+  }
+
+  async findDoctorOrder(doctorId: string) {
+    if(!mongoose.Types.ObjectId.isValid(doctorId)) throw new NotFoundException('Doctor not found!');
+    const orders = await this.orderModel.find({doctor: doctorId})
+    .populate([
+      {path: 'schedule', select: 'start end date status'},
+      {path: 'user', select: 'name email'}
+    ]);
+    if(!orders) throw new NotFoundException('Order not found!');
+    return orders;
   }
 
   //fix lại truy vấn client (done)
@@ -107,7 +118,7 @@ export class OrdersService {
     const order = await this.orderModel.findById(orderId);
     if (!order) throw new NotFoundException('Order not found!');
     if (order.status !== 'PENDING') throw new BadRequestException('Only pending order can be rejected!');
-
+    if (!order.user) throw new BadRequestException('Order has no user!');
     if (role === 'DOCTOR' && String(order.doctor) !== String(actorId)) {
       throw new ForbiddenException('You are not allow to reject this order!');
     }

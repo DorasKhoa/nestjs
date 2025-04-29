@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import { IsArray, IsMongoId, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateCenterDto {
@@ -7,6 +8,7 @@ export class CreateCenterDto {
 
     @IsNotEmpty()
     @IsNumber()
+    @Type(()=> Number)
     contact: number;
 
     @IsOptional()

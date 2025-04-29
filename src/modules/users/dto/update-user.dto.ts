@@ -1,4 +1,5 @@
-import { ArrayUnique, IsArray, IsMongoId, IsNumber, IsOptional, IsString } from "class-validator"
+import { Type } from "class-transformer";
+import { ArrayUnique, IsArray, IsMongoId, IsNumber, IsOptional, IsString, Matches, MinLength } from "class-validator"
 
 export class UpdateUserDto {
 
@@ -16,7 +17,10 @@ export class UpdateUserDto {
 
     @IsOptional()
     @IsString()
-    password?: string;
+    @MinLength(6)
+    @Matches(/^(?=.*[0-9])(?=.*[\W_])/,
+        { message: 'Password must contain at least one number and one special character' })
+    password: string;
 
     @IsOptional()
     @IsString()
@@ -28,6 +32,7 @@ export class UpdateUserDto {
 
     @IsOptional()
     @IsNumber()
+    @Type(()=> Number)
     phone?: number;
 
     @IsOptional()
@@ -36,6 +41,7 @@ export class UpdateUserDto {
 
     @IsOptional()
     @IsNumber()
+    @Type(()=> Number)
     fees?: number;
 
     @IsOptional()

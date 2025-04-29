@@ -12,7 +12,7 @@ export class New extends Document {
     @Prop()
     description: string;
 
-    @Prop({type: [String]})
-    image?: string[];
+    @Prop()
+    image?: string;
 }
 export const NewSchema = SchemaFactory.createForClass(New);

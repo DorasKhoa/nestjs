@@ -1,4 +1,5 @@
 import { ArrayUnique, IsArray, IsMongoId, IsNumber, IsOptional, IsString } from "class-validator";
+import { Type } from "class-transformer";
 
 export class UpdateCenterDto {
     @IsOptional()
@@ -7,6 +8,7 @@ export class UpdateCenterDto {
 
     @IsOptional()
     @IsNumber()
+    @Type(()=> Number)
     contact?: number;
 
     @IsOptional()

@@ -8,7 +8,7 @@ export class Order extends Document {
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Schedule'})
     schedule: Types.ObjectId | null;
     
-    @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true})
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Client', required: true})
     user: Types.ObjectId
     
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true})

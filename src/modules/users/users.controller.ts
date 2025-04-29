@@ -43,9 +43,14 @@ export class UsersController {
 
     //========= DOCTOR + ADMIN =========
     @Patch('profile')
-    @Roles(Role.DOCTOR, Role.ADMIN)
-    updateProfile(@Request() req, data: UpdateUserDto) {
-        return this.usersService.updateUser(req.user._id, data);
+    @Roles(Role.DOCTOR, Role.ADMIN, Role.STAFF)
+    @UseInterceptors(FileInterceptor('avatar'))
+    updateProfile(
+        @Body() data: UpdateUserDto,
+        @Request() req: any,
+        @UploadedFile() file? :Express.Multer.File,
+    ) {
+        return this.usersService.updateUser(req.user._id, data, file);
     }
 
     //========= ALL =========

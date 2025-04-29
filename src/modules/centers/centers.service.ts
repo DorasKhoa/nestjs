@@ -32,7 +32,17 @@ export class CentersService {
 
     async getCenterById(id: string) {
         if (!mongoose.Types.ObjectId.isValid(id)) throw new NotFoundException('Center not found!')
-        const center = await this.centerModel.findById(id);
+        const center = await this.centerModel.findById(id)
+        .populate('doctors', 'avatar name email')
+        .populate('requirements', 'name instruction quantity')
+        .populate({
+            path: 'departments',
+            select: 'name',
+            populate: {
+                path: 'doctor',
+                select: 'name'
+            }
+        })
         if (!center) throw new NotFoundException('Center not found!')
         return center;
     }
@@ -41,8 +51,6 @@ export class CentersService {
         if (!mongoose.Types.ObjectId.isValid(id)) throw new NotFoundException('User not found!');
         const exsitingLocal = await this.centerModel.exists({ local: data.local });
         if (exsitingLocal) throw new BadRequestException('Local is already existed')
-        const existingContact = await this.centerModel.exists({ contact: data.contact });
-        if (existingContact) throw new BadRequestException('Contact is already existed')
         const updateCenter = await this.centerModel.findByIdAndUpdate(id, data, { new: true });
         if (!updateCenter) throw new NotFoundException('User not found!');
         return updateCenter;

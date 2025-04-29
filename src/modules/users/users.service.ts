@@ -32,8 +32,9 @@ export class UsersService {
     }
 
     async findAllUsers() {
-        const users = await this.userModel.find().exec();
-        if (!users) throw new NotFoundException('User not found!');
+        const users = await this.userModel.find().select('-password')
+        .populate('center', 'local');
+        if (!users || users.length === 0 ) throw new NotFoundException('User not found!');
         return users;
     }
 
@@ -54,6 +55,8 @@ export class UsersService {
             data.avatar = uploadResult.secure_url; // gán url vào object update
         }
 
+        if(data.password) await hashedPasswordHelper(data.password);
+
         const updateUser = await this.userModel.findByIdAndUpdate(id, data, { new: true }).exec();
         if (!updateUser) throw new NotFoundException('User not found!');
         return { message: 'User updated successfully', updateUser }
@@ -70,7 +73,7 @@ export class UsersService {
     }
 
     async getAllDoctor() {
-        const doctors = await this.userModel.find({ role: 'DOCTOR' }).select('avatar name fees category')
+        const doctors = await this.userModel.find({ role: 'DOCTOR' }).select('avatar email name fees category')
         if (!doctors) throw new NotFoundException('User not found!');
         return doctors;
     }

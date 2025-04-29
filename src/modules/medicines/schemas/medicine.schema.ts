@@ -19,7 +19,7 @@ export class Medicine extends Document {
     quantity?: number;
 
     @Prop({default: 0})
-    price: number;
+    price?: number;
 }
 
 export const MedicineSchema = SchemaFactory.createForClass(Medicine);

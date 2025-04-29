@@ -17,7 +17,7 @@ export class Schedule extends Document {
     @Prop({ required: true, enum: ['PENDING', 'UNASSIGNED', 'APPROVED', 'REJECTED', 'PAID'], default: 'UNASSIGNED' })
     status: string;
 
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null })
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Client', default: null })
     user?: Types.ObjectId | null
 
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null })

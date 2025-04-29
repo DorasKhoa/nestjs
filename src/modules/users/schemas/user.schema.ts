@@ -47,7 +47,7 @@ export class User extends Document{
     @Prop({type: [{type: mongoose.Schema.Types.ObjectId}], ref: 'Medicine', default: []})
     medicines: Types.ObjectId[];
 
-    @Prop({required: true})
+    @Prop()
     category: string
 }
 

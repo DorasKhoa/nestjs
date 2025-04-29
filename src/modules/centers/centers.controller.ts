@@ -46,11 +46,12 @@ export class CentersController {
         return this.centersService.removeDoctorFromCenter(centerId, doctorId);
     }
 
-    //========= ALL =========
     @Get()
+    @Roles(Role.ADMIN)
     async getAllCenter() {
         return this.centersService.getAllCenter();
     }
+    //========= ALL =========
 
     @Get(':id')
     async getCenterById(@Param('id') id:string) {

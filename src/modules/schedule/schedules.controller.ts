@@ -56,4 +56,6 @@ export class SchedulesController {
     findScheduleById(@Param('id') id: string) {
         return this.schedulesService.findScheduleById(id);
     }
+
+    //viết thêm function bác sĩ chỉ coi được lịch của họ
 }

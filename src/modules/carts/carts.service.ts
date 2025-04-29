@@ -19,7 +19,9 @@ export class CartsService {
         if(!mongoose.Types.ObjectId.isValid(medicineId)) throw new NotFoundException('Medicine not found!');
         if(!mongoose.Types.ObjectId.isValid(clientId)) throw new NotFoundException('Client not found!');
         const medicine = await this.medicineModel.findById(medicineId);
-        if(!medicine) throw new NotFoundException('Medicine not found!');
+        if (!medicine || typeof medicine.price === 'undefined') {
+            throw new Error('Medicine price is required');
+        }
         const client = await this.clientModel.findById(clientId)
         .populate({
             path: 'carts',

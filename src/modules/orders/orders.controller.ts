@@ -26,14 +26,21 @@ export class OrdersController {
   approveOrder(@Param('id') id: string, @Req() req: any) {
     return this.ordersService.approveOrder(id, req.user._id);
   }
-
+  
+  //xem order của Doctor
+  @Get('doctor')
+  @Roles(Role.DOCTOR)
+  findDocOrder(@Req() req:any) {
+    return this.ordersService.findDoctorOrder(req.user._id)
+  }
   //========= USER & DOCTOR =========
-  //xem order của họ
+  //xem order của User
   @Get('me')
   @Roles(Role.USER, Role.DOCTOR)
   findMyOrder(@Req() req: any) {
     return this.ordersService.findMyOrder(req.user._id)
   }
+
 
   //========= USER =========
   //client book 1 lịch hẹn thông qua schedule
