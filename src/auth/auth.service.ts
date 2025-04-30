@@ -9,7 +9,7 @@ import { ClientsService } from 'src/modules/clients/clients.service';
 export class AuthService {
   constructor(
     private usersService: UsersService,
-    private ClientsService: ClientsService,
+    private clientsService: ClientsService,
     private jwtService: JwtService
   ) {}
 
@@ -23,7 +23,7 @@ export class AuthService {
       role = user.role;
     } else {
       // Nếu không thấy, thử tìm trong Client
-      user = await this.ClientsService.findByEmail(email);
+      user = await this.clientsService.findByEmail(email);
       if (user) {
         role = 'USER';
       }
@@ -50,6 +50,11 @@ export class AuthService {
   }
 
   async register(data: CreateAuthDto) {
-    return this.ClientsService.create(data);
+    return this.clientsService.create(data);
   }
 }
+
+//   async register(data: CreateAuthDto) {
+//     return this.usersService.createUser(data);
+//   }
+// }

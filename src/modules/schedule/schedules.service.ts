@@ -45,6 +45,7 @@ export class SchedulesService {
         if(!schedule) throw new NotFoundException('Schedule not found!');
         if(schedule.user) throw new BadRequestException('This Schedule had user')
         if(schedule.doctor) throw new BadRequestException('This Schedule had doctor');
+        await this.scheduleModel.findByIdAndDelete(id);
         return { message: 'Schedule deleted successfully!' };
     }
 

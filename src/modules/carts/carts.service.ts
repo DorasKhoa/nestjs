@@ -110,4 +110,11 @@ export class CartsService {
     async cash(cart: string, client: string) {
         return this._paymentMethod(cart, client, 'CASH')
     }
+
+    async getAllCart(clientId: string) {
+        if(!mongoose.Types.ObjectId.isValid(clientId)) throw new NotFoundException('Cart not found!');
+        const cart = await this.cartModel.find({user: clientId});
+        if(!cart) throw new NotFoundException('Cart not found!')
+        return cart;
+    }
 }

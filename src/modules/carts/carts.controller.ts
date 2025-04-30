@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Post, Request } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Req, Request } from '@nestjs/common';
 import { CartsService } from './carts.service';
 import { Roles } from 'src/common/decorator/customize';
 import { Role } from 'src/common/enums/role.enum';
@@ -46,5 +46,13 @@ export class CartsController {
   @Roles(Role.USER)
   card(@Param('id') id:string, @Request() req:any) {
     return this.cartsService.card(id, req.user._id);
+  }
+
+  //xem cart của người dùng
+  //truyền vào id của người dùng từ params
+  @Get()
+  @Roles(Role.USER)
+  getAllCart(@Request() req:any) {
+    return this.cartsService.getAllCart(req.user._id);
   }
 }
